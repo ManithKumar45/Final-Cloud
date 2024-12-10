@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Search</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        table {
+            margin-top: 20px;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+        tr:hover {
+            background: #eaf4ff;
+        }
+        .no-results {
+            color: gray;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Data by Household Number</h1>
+
+        <!-- Search Form -->
+        <form method="POST" action="/search">
+            <div class="mb-3">
+                <label for="hshd_num" class="form-label">Enter Household Number (Hshd_num):</label>
+                <input type="text" id="hshd_num" name="hshd_num" class="form-control" placeholder="e.g., 12345" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </form>
+
+        <hr>
+
+        <!-- Display error message if any -->
+        {% if error_message %}
+            <p class="error-message text-center">{{ error_message }}</p>
+        {% endif %}
+
+        <!-- Display results if rows are available -->
+        {% if rows %}
+            <h2 class="mt-4">Results for Household Number: <span class="text-primary">{{ hshd_num }}</span></h2>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>HSHD_NUM</th>
+                        <th>BASKET_NUM</th>
+                        <th>DATE</th>
+                        <th>PRODUCT_NUM</th>
+                        <th>DEPARTMENT</th>
+                        <th>COMMODITY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td>{{ row[2] }}</td>
+                        <td>{{ row[3] }}</td>
+                        <td>{{ row[4] }}</td>
+                        <td>{{ row[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% elif hshd_num %}
+            <p class="no-results">No results found for Household Number: <strong>{{ hshd_num }}</strong></p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
